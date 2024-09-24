@@ -7,7 +7,8 @@ using UnityEngine.UI;
 
 public class AuthManager : MonoBehaviour
 {
-    [SerializeField] private Button signInButton;
+    [SerializeField] private Button signinButton;
+    [SerializeField] private Button signoutButton;
     [SerializeField] private TMP_Text messageText;
 
     private async void Awake()
@@ -15,11 +16,21 @@ public class AuthManager : MonoBehaviour
         // USG 초기화
         await UnityServices.InitializeAsync();
 
+        // 이벤트 초기화
+        EventConfig();
+
         // 버튼 이벤트 연결
-        signInButton.onClick.AddListener(async () =>
+        signinButton.onClick.AddListener(async () =>
         {
             // 익명 로그인
             await SignInAsync();
+        });
+
+        // 로그아웃 버튼 이벤트 연결
+        signoutButton.onClick.AddListener(() =>
+        {
+            // 로그아웃
+            AuthenticationService.Instance.SignOut();
         });
     }
 
@@ -42,17 +53,17 @@ public class AuthManager : MonoBehaviour
         // 로그인 성공했을 때 호출되는 이벤트
         AuthenticationService.Instance.SignedIn += () =>
         {
-            messageText.text = $"Player Id : {AuthenticationService.Instance.PlayerId}";
+            messageText.text = $"Player Id : {AuthenticationService.Instance.PlayerId}\n";
         };
 
         AuthenticationService.Instance.SignedOut += () =>
         {
-            messageText.text = $"Signed Out";
+            messageText.text = $"Signed Out\n";
         };
 
         AuthenticationService.Instance.Expired += () =>
         {
-            messageText.text = $"Player Session was expired!!";
+            messageText.text = $"Player Session was expired!!\n";
         };
     }
 
