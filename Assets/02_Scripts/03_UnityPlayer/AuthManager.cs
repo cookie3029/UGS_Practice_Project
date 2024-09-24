@@ -22,6 +22,7 @@ namespace AuthUnityPlayer
             PlayerAccountService.Instance.SignedIn += OnSignedIn;
             PlayerAccountService.Instance.SignedOut += () =>
             {
+                // AuthenticationService.Instance.SignOut();
                 Debug.Log("로그 아웃!");
             };
 
@@ -45,6 +46,8 @@ namespace AuthUnityPlayer
         private async void OnSignedIn()
         {
             string accessToken = PlayerAccountService.Instance.AccessToken;
+
+            if (AuthenticationService.Instance.IsSignedIn) return;
 
             await AuthenticationService.Instance.SignInWithUnityAsync(accessToken);
 
