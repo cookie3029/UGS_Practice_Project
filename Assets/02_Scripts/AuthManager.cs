@@ -37,6 +37,26 @@ public class AuthManager : MonoBehaviour
         }
     }
 
+    private void EventConfig()
+    {
+        // 로그인 성공했을 때 호출되는 이벤트
+        AuthenticationService.Instance.SignedIn += () =>
+        {
+            messageText.text = $"Player Id : {AuthenticationService.Instance.PlayerId}";
+        };
+
+        AuthenticationService.Instance.SignedOut += () =>
+        {
+            messageText.text = $"Signed Out";
+        };
+
+        AuthenticationService.Instance.Expired += () =>
+        {
+            messageText.text = $"Player Session was expired!!";
+        };
+    }
+
+
     /*
         C# Thread Programming
 
